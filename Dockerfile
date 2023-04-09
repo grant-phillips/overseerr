@@ -1,4 +1,4 @@
-# syntax=docker/dockerfile:1
+syntax=docker/dockerfile:1
 
 FROM ghcr.io/linuxserver/baseimage-alpine:3.17
 
@@ -11,6 +11,9 @@ LABEL maintainer="nemchik"
 
 # set environment variables
 ENV HOME="/config"
+ENV PUID=1000
+ENV PGID=1000
+ENV TZ=Europe/Berlin
 
 RUN \
   echo "**** install build packages ****" && \
