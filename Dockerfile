@@ -1,4 +1,4 @@
-syntax=docker/dockerfile:1
+# syntax=docker/dockerfile:1
 
 FROM ghcr.io/linuxserver/baseimage-alpine:3.17
 
