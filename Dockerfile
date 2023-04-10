@@ -1,5 +1,4 @@
-# ssyntax=docker/dockerfile:1
-
+# syntax=docker/dockerfile:1
 FROM ghcr.io/linuxserver/baseimage-alpine:3.17
 
 # set version label
@@ -14,6 +13,11 @@ ENV HOME="/config"
 ENV PUID=1000
 ENV PGID=1000
 ENV TZ=Europe/Berlin
+
+# Install gcsfuse
+ENV GCSFUSE_REPO=gcsfuse-alpine
+RUN echo "https://packages.cloud.google.com/apt $GCSFUSE_REPO main" > /etc/apk/repositories/$GCSFUSE_REPO && \
+    curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | apk add --no-cache --virtual=build-dependencies --repository https://packages.cloud.google.com/apt gcsfuse
 
 RUN \
   echo "**** install build packages ****" && \
@@ -58,8 +62,10 @@ RUN \
 
 # copy local files
 COPY root/ /
+COPY entrypoint.sh /entrypoint.sh
 
 # ports and volumes
 EXPOSE 5055
-
 VOLUME /config
+
+ENTRYPOINT ["/bin/sh", "/entrypoint.sh"]
